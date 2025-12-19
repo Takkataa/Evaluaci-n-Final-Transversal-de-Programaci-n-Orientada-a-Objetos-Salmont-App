@@ -56,7 +56,7 @@ https://github.com/Takkataa/Evaluaci-n-Final-Transversal-de-Programaci-n-Orienta
 
 **Repositorio GitHub:** https://github.com/Takkataa/Evaluaci-n-Final-Transversal-de-Programaci-n-Orientada-a-Objetos-Salmont-App.git
 
-**Fecha de entrega:** \[15/12/2025]
+**Fecha de entrega:** \[21/12/2025]
 
 ---
 
