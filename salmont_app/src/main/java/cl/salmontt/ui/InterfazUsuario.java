@@ -1,6 +1,6 @@
 package cl.salmontt.ui;
 
-import cl.salmontt.data.GestorEntidades;
+import cl.salmontt.data.*;
 import cl.salmontt.model.*;
 import cl.salmontt.utils.ValidadorInputs;
 
@@ -23,11 +23,13 @@ public class InterfazUsuario extends JFrame implements ActionListener {
 
     // Constantes para identificar los "paneles" que componen la UI
     final static String MENU_PRINCIPAL_PANEL = "Menu Principal";
-    final static String GESTION_EMPLEADOS_PANEL = "Gestion Empleados";
+    final static String GESTION_PERSONAS_PANEL = "Gestion Personas";
     final static String GESTION_UNIDADES_PANEL = "Gestion Unidades Operativas";
     final static String OPCIONES_PLANTAS_PANEL = "Opciones Plantas";
     final static String OPCIONES_CENTROS_CULTIVO_PANEL = "Opciones Centros Cultivo";
     final static String OPCIONES_CENTROS_VENTA_PANEL = "Opciones Centros Venta";
+    final static String GESTION_EMPLEADOS_PANEL = "Gestion Empleados";
+    final static String GESTION_CLIENTES_PANEL = "Gestion Clientes";
 
     // Componentes principales de la UI
     private JPanel cardPanel;
@@ -44,21 +46,33 @@ public class InterfazUsuario extends JFrame implements ActionListener {
 
     // Botones usados para la navegación
     // para el ActionListener, es decir para que los botones tengan funcionalidad
-    private JButton botonGestionEmpleados;
-    private JButton botonGestionUnidadesOperativas;
-    private JButton botonVolverUnidadesOp;
+    private JButton btnGestionPersonas;
+    private JButton btnGestionUnidadesOperativas;
+
+    private JButton btnVolverUnidadesOp;
+
+    private JButton btnGestionEmpleados;
+    private JButton btnGestionClientes;
+    private JButton btnVolverPersonas;
 
     // Botones específicos del menú de empleados que necesitan ser accesibles
     private JButton btnCrearEmpleado;
-    private JButton btnBuscarRut;
-    private JButton btnBuscarNombre;
-    private JButton btnUltimosCinco;
+    private JButton btnBuscarRutEmpleados;
+    private JButton btnBuscarNombreEmpleados;
+    private JButton btnUltimosCincoEmpleados;
     private JButton btnVolverEmpleados;
 
+    // Botones específicos del menú de clientes que necesitan ser accesibles
+    private JButton btnCrearCliente;
+    private JButton btnBuscarRutClientes;
+    private JButton btnBuscarNombreClientes;
+    private JButton btnUltimosCincoClientes;
+    private JButton btnVolverClientes;
+
     // Botones específicos del menú de unidades operativas
-    private JButton botonGestionPlantas;
-    private JButton botonGestionCentrosCultivos;
-    private JButton botonGestionCentrosVentas;
+    private JButton btnGestionPlantas;
+    private JButton btnGestionCentrosCultivos;
+    private JButton btnGestionCentrosVentas;
 
     // Botones específicos del menú de plantas de produccion
     private JButton btnCrearPlantas;
@@ -94,18 +108,23 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         // 2. Crear los distintos paneles/vistas
         JPanel panelMenuPrincipal = crearPanelMenuPrincipal();
         JPanel panelGestionUnidades = crearPanelGestionUnidades();
-        JPanel panelGestionEmpleados = crearPanelGestionEmpleados();
+        JPanel panelGestionPersonas = crearPanelGestionPersonas();
+
         JPanel panelOpcionesPlantas = crearPanelOpcionesPlantas();
         JPanel panelOpcionesCentrosCultivos = crearPanelOpcionesCentrosCultivos();
         JPanel panelOpcionesCentrosVentas = crearPanelOpcionesCentrosVentas();
+        JPanel panelGestionEmpleados = crearPanelGestionEmpleados();
+        JPanel panelGestionClientes = crearPanelGestionClientes();
 
         // 3. Añadir los paneles al CardLayout con sus nombres clave
         cardPanel.add(panelMenuPrincipal, MENU_PRINCIPAL_PANEL);
         cardPanel.add(panelGestionUnidades, GESTION_UNIDADES_PANEL);
-        cardPanel.add(panelGestionEmpleados, GESTION_EMPLEADOS_PANEL);
+        cardPanel.add(panelGestionPersonas, GESTION_PERSONAS_PANEL);
         cardPanel.add(panelOpcionesPlantas, OPCIONES_PLANTAS_PANEL);
         cardPanel.add(panelOpcionesCentrosCultivos, OPCIONES_CENTROS_CULTIVO_PANEL);
         cardPanel.add(panelOpcionesCentrosVentas, OPCIONES_CENTROS_VENTA_PANEL);
+        cardPanel.add(panelGestionClientes, GESTION_CLIENTES_PANEL);
+        cardPanel.add(panelGestionEmpleados, GESTION_EMPLEADOS_PANEL);
 
         // 4. Añadir el cardPanel al JFrame
         getContentPane().add(cardPanel, BorderLayout.CENTER);
@@ -128,18 +147,18 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         JPanel buttonGridPanel = new JPanel(new GridLayout(2, 1, 10, 10));
 
-        botonGestionEmpleados = new JButton("Gestión de Empleados");
-        botonGestionUnidadesOperativas = new JButton("Gestión de Unidades Operativas");
+        btnGestionPersonas = new JButton("Gestión de Personas");
+        btnGestionUnidadesOperativas = new JButton("Gestión de Unidades Operativas");
 
         // Añadir ActionListeners a los botones
-        botonGestionEmpleados.addActionListener(this);
-        botonGestionUnidadesOperativas.addActionListener(this);
+        btnGestionPersonas.addActionListener(this);
+        btnGestionUnidadesOperativas.addActionListener(this);
 
-        botonGestionEmpleados.setPreferredSize(new Dimension(250, 45));
-        botonGestionUnidadesOperativas.setPreferredSize(new Dimension(250, 45));
+        btnGestionPersonas.setPreferredSize(new Dimension(250, 45));
+        btnGestionUnidadesOperativas.setPreferredSize(new Dimension(250, 45));
 
-        buttonGridPanel.add(botonGestionEmpleados);
-        buttonGridPanel.add(botonGestionUnidadesOperativas);
+        buttonGridPanel.add(btnGestionPersonas);
+        buttonGridPanel.add(btnGestionUnidadesOperativas);
         centerPanel.add(buttonGridPanel);
 
         panel.add(centerPanel, BorderLayout.CENTER);
@@ -155,29 +174,65 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         JPanel buttonGridPanel = new JPanel(new GridLayout(4, 1, 10, 10));
 
-        botonGestionPlantas = new JButton("Gestión de Plantas de producción");
-        botonGestionCentrosCultivos = new JButton("Gestión de Centros de cultivos");
-        botonGestionCentrosVentas = new JButton("Gestión de Centros de ventas");
-        botonVolverUnidadesOp = new JButton("Volver al Menú Principal");
+        btnGestionPlantas = new JButton("Gestión de Plantas de producción");
+        btnGestionCentrosCultivos = new JButton("Gestión de Centros de cultivos");
+        btnGestionCentrosVentas = new JButton("Gestión de Centros de ventas");
+        btnVolverUnidadesOp = new JButton("Volver al Menú Principal");
 
         // Estilo básico para botones
-        botonGestionPlantas.setPreferredSize(new Dimension(250, 40));
-        botonGestionCentrosCultivos.setPreferredSize(new Dimension(250, 40));
-        botonGestionCentrosVentas.setPreferredSize(new Dimension(250, 40));
-        botonVolverUnidadesOp.setPreferredSize(new Dimension(250, 40));
+        btnGestionPlantas.setPreferredSize(new Dimension(250, 40));
+        btnGestionCentrosCultivos.setPreferredSize(new Dimension(250, 40));
+        btnGestionCentrosVentas.setPreferredSize(new Dimension(250, 40));
+        btnVolverUnidadesOp.setPreferredSize(new Dimension(250, 40));
 
         // Asignar ActionListener a los botones
-        botonVolverUnidadesOp.addActionListener(this);
-        botonGestionPlantas.addActionListener(this);
-        botonGestionCentrosCultivos.addActionListener(this);
-        botonGestionCentrosVentas.addActionListener(this);
+        btnVolverUnidadesOp.addActionListener(this);
+        btnGestionPlantas.addActionListener(this);
+        btnGestionCentrosCultivos.addActionListener(this);
+        btnGestionCentrosVentas.addActionListener(this);
 
-        buttonGridPanel.add(botonGestionPlantas);
-        buttonGridPanel.add(botonGestionCentrosCultivos);
-        buttonGridPanel.add(botonGestionCentrosVentas);
-        buttonGridPanel.add(botonVolverUnidadesOp);
+        buttonGridPanel.add(btnGestionPlantas);
+        buttonGridPanel.add(btnGestionCentrosCultivos);
+        buttonGridPanel.add(btnGestionCentrosVentas);
+        buttonGridPanel.add(btnVolverUnidadesOp);
 
         centerPanel.add(buttonGridPanel);// se crean dos para que el panel tenga un aspecto mas ordenado
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private JPanel crearPanelGestionPersonas() {
+        JPanel panel = new JPanel(new BorderLayout(10, 20));
+
+        panel.add(headerPanel("Gestión de Personas", "Seleccione una opción:"), BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+        // Usamos GridLayout para los botones en el centro (5 filas, 1 columna)
+        JPanel buttonGridPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+        btnGestionEmpleados = new JButton("Gestionar Empleados");
+        btnGestionClientes = new JButton("Gestionar Clientes");
+        btnVolverPersonas = new JButton("Volver al Menú Principal");
+
+        // Añadir ActionListeners a los nuevos botones
+        btnGestionEmpleados.addActionListener(this);
+        btnGestionClientes.addActionListener(this);
+        btnVolverPersonas.addActionListener(this);
+
+        // Establecer un tamaño preferido
+        Dimension buttonSize = new Dimension(250, 40);
+        btnGestionEmpleados.setPreferredSize(buttonSize);
+        btnGestionClientes.setPreferredSize(buttonSize);
+        btnVolverPersonas.setPreferredSize(buttonSize);
+
+        buttonGridPanel.add(btnGestionEmpleados);
+        buttonGridPanel.add(btnGestionClientes);
+        buttonGridPanel.add(btnVolverPersonas);
+
+        centerPanel.add(buttonGridPanel);
         panel.add(centerPanel, BorderLayout.CENTER);
 
         return panel;
@@ -195,31 +250,75 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         JPanel buttonGridPanel = new JPanel(new GridLayout(5, 1, 10, 10));
 
         btnCrearEmpleado = new JButton("Crear Nuevo Empleado");
-        btnBuscarRut = new JButton("Buscar Empleado por RUT");
-        btnBuscarNombre = new JButton("Buscar Empleado por Nombre");
-        btnUltimosCinco = new JButton("Mostrar 5 Últimos Empleados");
+        btnBuscarRutEmpleados = new JButton("Buscar Empleado por RUT");
+        btnBuscarNombreEmpleados = new JButton("Buscar Empleado por Nombre");
+        btnUltimosCincoEmpleados = new JButton("Mostrar 5 Últimos Empleados");
         btnVolverEmpleados = new JButton("Volver al Menú Anterior");
 
         // Añadir ActionListeners a los nuevos botones
         btnCrearEmpleado.addActionListener(this);
-        btnBuscarRut.addActionListener(this);
-        btnBuscarNombre.addActionListener(this);
-        btnUltimosCinco.addActionListener(this);
+        btnBuscarRutEmpleados.addActionListener(this);
+        btnBuscarNombreEmpleados.addActionListener(this);
+        btnUltimosCincoEmpleados.addActionListener(this);
         btnVolverEmpleados.addActionListener(this);
 
         // Establecer un tamaño preferido
         Dimension buttonSize = new Dimension(250, 40);
         btnCrearEmpleado.setPreferredSize(buttonSize);
-        btnBuscarRut.setPreferredSize(buttonSize);
-        btnBuscarNombre.setPreferredSize(buttonSize);
-        btnUltimosCinco.setPreferredSize(buttonSize);
+        btnBuscarRutEmpleados.setPreferredSize(buttonSize);
+        btnBuscarNombreEmpleados.setPreferredSize(buttonSize);
+        btnUltimosCincoEmpleados.setPreferredSize(buttonSize);
         btnVolverEmpleados.setPreferredSize(buttonSize);
 
         buttonGridPanel.add(btnCrearEmpleado);
-        buttonGridPanel.add(btnBuscarRut);
-        buttonGridPanel.add(btnBuscarNombre);
-        buttonGridPanel.add(btnUltimosCinco);
+        buttonGridPanel.add(btnBuscarRutEmpleados);
+        buttonGridPanel.add(btnBuscarNombreEmpleados);
+        buttonGridPanel.add(btnUltimosCincoEmpleados);
         buttonGridPanel.add(btnVolverEmpleados);
+
+        centerPanel.add(buttonGridPanel);
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private JPanel crearPanelGestionClientes() {
+        JPanel panel = new JPanel(new BorderLayout(10, 20));
+
+        panel.add(headerPanel("Gestión de Clientes", "Administración y Búsqueda"), BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+        // Usamos GridLayout para los botones en el centro (5 filas, 1 columna)
+        JPanel buttonGridPanel = new JPanel(new GridLayout(5, 1, 10, 10));
+
+        btnCrearCliente = new JButton("Crear Nuevo Cliente");
+        btnBuscarRutClientes = new JButton("Buscar Cliente por RUT");
+        btnBuscarNombreClientes = new JButton("Buscar Cliente por Nombre");
+        btnUltimosCincoClientes = new JButton("Mostrar 5 Últimos Clientes");
+        btnVolverClientes = new JButton("Volver al Menú Anterior");
+
+        // Añadir ActionListeners a los nuevos botones
+        btnCrearCliente.addActionListener(this);
+        btnBuscarRutClientes.addActionListener(this);
+        btnBuscarNombreClientes.addActionListener(this);
+        btnUltimosCincoClientes.addActionListener(this);
+        btnVolverClientes.addActionListener(this);
+
+        // Establecer un tamaño preferido
+        Dimension buttonSize = new Dimension(250, 40);
+        btnCrearCliente.setPreferredSize(buttonSize);
+        btnBuscarRutClientes.setPreferredSize(buttonSize);
+        btnBuscarNombreClientes.setPreferredSize(buttonSize);
+        btnUltimosCincoClientes.setPreferredSize(buttonSize);
+        btnVolverClientes.setPreferredSize(buttonSize);
+
+        buttonGridPanel.add(btnCrearCliente);
+        buttonGridPanel.add(btnBuscarRutClientes);
+        buttonGridPanel.add(btnBuscarNombreClientes);
+        buttonGridPanel.add(btnUltimosCincoClientes);
+        buttonGridPanel.add(btnVolverClientes);
 
         centerPanel.add(buttonGridPanel);
         panel.add(centerPanel, BorderLayout.CENTER);
@@ -339,28 +438,37 @@ public class InterfazUsuario extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // --- Lógica de Navegación (CardLayout) ---
-        if (e.getSource() == botonGestionEmpleados) {
-            cl.show(cardPanel, GESTION_EMPLEADOS_PANEL);
-            setTitle("Salmontt App - Gestión Empleados");
-            setSize(400, 500); // Ajustar tamaño para la nueva vista si es necesario
-        } else if (e.getSource() == botonGestionUnidadesOperativas) {
+        if (e.getSource() == btnGestionPersonas) {
+            cl.show(cardPanel, GESTION_PERSONAS_PANEL);
+            setTitle("Salmontt App - Gestión Personas");
+            setSize(400, 400); // Ajustar tamaño para la nueva vista si es necesario
+        } else if (e.getSource() == btnGestionUnidadesOperativas) {
             cl.show(cardPanel, GESTION_UNIDADES_PANEL);
             setTitle("Salmontt App - Gestión Unidades");
             setSize(400, 450);
-        } else if (e.getSource() == botonVolverUnidadesOp || e.getSource() == btnVolverEmpleados) {
+        } else if (e.getSource() == btnVolverUnidadesOp || e.getSource() == btnVolverPersonas) {
             // Ambos botones de "Volver" regresan al menú principal
             cl.show(cardPanel, MENU_PRINCIPAL_PANEL);
             setTitle("Salmontt App");
             setSize(400, 350);
         }
 
-        // --- Lógica de Funcionalidad de Botones de Empleados ---
+        else if (e.getSource() == btnGestionEmpleados) {
+            cl.show(cardPanel, GESTION_EMPLEADOS_PANEL);
+            setTitle("Salmontt App - Gestión Empleados");
+            setSize(400, 500);
+        } else if (e.getSource() == btnGestionClientes) {
+            cl.show(cardPanel, GESTION_CLIENTES_PANEL);
+            setTitle("Salmontt App - Gestión Clientes");
+            setSize(400, 500);
+        }
+
         else if (e.getSource() == btnCrearEmpleado) {
             mostrarDialogoCrearEmpleado();
-        } else if (e.getSource() == btnBuscarRut) {
+        } else if (e.getSource() == btnBuscarRutEmpleados) {
             String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT a buscar:");
             if (rut != null && !rut.isEmpty()) {
-                Registrable empleado = gestorEntidades.buscarPorRut(rut);
+                Registrable empleado = gestorEntidades.buscarPorRut(1, rut);
                 if (empleado != null) {
                     JOptionPane.showMessageDialog(this,
                             "Resultado de búsqueda por RUT: \n" + empleado.mostrarResumen());
@@ -368,10 +476,10 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "No se encontró ningún empleado con el RUT: " + rut);
                 }
             }
-        } else if (e.getSource() == btnBuscarNombre) {
+        } else if (e.getSource() == btnBuscarNombreEmpleados) {
             String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre a buscar:");
             if (nombre != null && !nombre.isEmpty()) {
-                List<Registrable> empleados = gestorEntidades.buscarPorNombre(nombre);
+                List<Registrable> empleados = gestorEntidades.buscarPorNombre(1, nombre);
                 if (!empleados.isEmpty()) {
                     String resultados = "Resultados de búsqueda por nombre:\n";
                     for (Registrable empleado : empleados) {
@@ -382,9 +490,9 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "No se encontraron empleados con el nombre: " + nombre);
                 }
             }
-        } else if (e.getSource() == btnUltimosCinco) {
+        } else if (e.getSource() == btnUltimosCincoEmpleados) {
             // Llama a tu método para obtener los últimos 5:
-            List<Registrable> ultimos = gestorEntidades.buscarUltimosCincoEmpleados();
+            List<Registrable> ultimos = gestorEntidades.buscarUltimosCinco(1);
             if (!ultimos.isEmpty()) {
                 String resultados = "Ultimos 5 empleados creados:  \n";
                 for (Registrable empleado : ultimos) {
@@ -394,16 +502,66 @@ public class InterfazUsuario extends JFrame implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontraron empleados creados.");
             }
-            // logica para los botones del panel de gestion de unidades operativas
-        } else if (e.getSource() == botonGestionPlantas) {
+            // logica para los botones del panel de gestion de clientes
+        } else if (e.getSource() == btnVolverEmpleados) {
+            cl.show(cardPanel, GESTION_PERSONAS_PANEL);
+            setTitle("Salmontt App - Gestión Personas");
+            setSize(400, 400);
+        } else if (e.getSource() == btnCrearCliente) {
+            mostrarDialogoCrearCliente();
+        } else if (e.getSource() == btnBuscarRutClientes) {
+            String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT a buscar:");
+            if (rut != null && !rut.isEmpty()) {
+                Registrable cliente = gestorEntidades.buscarPorRut(2, rut);
+                if (cliente != null) {
+                    JOptionPane.showMessageDialog(this,
+                            "Resultado de búsqueda por RUT: \n" + cliente.mostrarResumen());
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró ningún cliente con el RUT: " + rut);
+                }
+            }
+        } else if (e.getSource() == btnBuscarNombreClientes) {
+            String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre a buscar:");
+            if (nombre != null && !nombre.isEmpty()) {
+                List<Registrable> clientes = gestorEntidades.buscarPorNombre(2, nombre);
+                if (!clientes.isEmpty()) {
+                    String resultados = "Resultados de búsqueda por nombre:\n";
+                    for (Registrable cliente : clientes) {
+                        resultados += cliente.mostrarResumen() + "\n";
+                    }
+                    JOptionPane.showMessageDialog(this, resultados);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontraron clientes con el nombre: " + nombre);
+                }
+            }
+        } else if (e.getSource() == btnUltimosCincoClientes) {
+            // Llama a tu método para obtener los últimos 5:
+            List<Registrable> ultimos = gestorEntidades.buscarUltimosCinco(2);
+            if (!ultimos.isEmpty()) {
+                String resultados = "Ultimos 5 clientes creados:  \n";
+                for (Registrable cliente : ultimos) {
+                    resultados += cliente.mostrarResumen() + "\n";
+                }
+                JOptionPane.showMessageDialog(this, resultados);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontraron clientes creados.");
+            }
+
+        } else if (e.getSource() == btnVolverClientes) {
+            cl.show(cardPanel, GESTION_PERSONAS_PANEL);
+            setTitle("Salmontt App - Gestión Personas");
+            setSize(400, 400);
+        }
+        // logica para los botones del panel de gestion de unidades operativas
+        else if (e.getSource() == btnGestionPlantas) {
             cl.show(cardPanel, OPCIONES_PLANTAS_PANEL);
             setTitle("Salmontt App - Gestión Plantas de Producción");
             setSize(400, 400);
-        } else if (e.getSource() == botonGestionCentrosCultivos) {
+        } else if (e.getSource() == btnGestionCentrosCultivos) {
             cl.show(cardPanel, OPCIONES_CENTROS_CULTIVO_PANEL);
             setTitle("Salmontt App - Gestión Centros de Cultivos");
             setSize(400, 400);
-        } else if (e.getSource() == botonGestionCentrosVentas) {
+        } else if (e.getSource() == btnGestionCentrosVentas) {
             cl.show(cardPanel, OPCIONES_CENTROS_VENTA_PANEL);
             setTitle("Salmontt App - Gestión Centros de Ventas");
             setSize(400, 400);
@@ -413,9 +571,9 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         else if (e.getSource() == btnCrearPlantas) {
             mostrarDialogoCrearPlanta();
         } else if (e.getSource() == btnUltimosCincoPlantas) {
-            List<Registrable> ultimos = gestorEntidades.buscarUltimosCincoPlantas();
+            List<Registrable> ultimos = gestorEntidades.buscarUltimosCinco(3);
             if (!ultimos.isEmpty()) {
-                String resultados = "Ultimos 5 plantas creadas:  \n";
+                String resultados = "Ultimas 5 plantas creadas:  \n";
                 for (Registrable planta : ultimos) {
                     resultados += planta.mostrarResumen() + "\n";
                 }
@@ -433,7 +591,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         else if (e.getSource() == btnCrearCentrosCultivos) {
             mostrarDialogoCrearCentroCultivo();
         } else if (e.getSource() == btnUltimosCincoCentrosCultivos) {
-            List<Registrable> ultimos = gestorEntidades.buscarUltimosCincoCentrosCultivos();
+            List<Registrable> ultimos = gestorEntidades.buscarUltimosCinco(4);
             if (!ultimos.isEmpty()) {
                 String resultados = "Ultimos 5 centros de cultivo creados:  \n";
                 for (Registrable centroCultivo : ultimos) {
@@ -453,7 +611,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
         else if (e.getSource() == btnCrearCentrosVentas) {
             mostrarDialogoCrearCentroVenta();
         } else if (e.getSource() == btnUltimosCincoCentrosVentas) {
-            List<Registrable> ultimos = gestorEntidades.buscarUltimosCincoCentrosVentas();
+            List<Registrable> ultimos = gestorEntidades.buscarUltimosCinco(5);
             if (!ultimos.isEmpty()) {
                 String resultados = "Ultimos 5 centros de ventas creados:  \n";
                 for (Registrable centroVenta : ultimos) {
@@ -543,7 +701,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                             comuna.toUpperCase(),
                             toneladasDeProduccion,
                             tiempoDeProduccionDias,
-                            gestorEntidades.buscarGerenteDeProduccion());
+                            gestorEntidades.buscarGerente(1));
 
                     gestorEntidades.agregarRegistrable(nuevaPlantaProceso);
 
@@ -614,7 +772,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                 String capacidadEnToneladasStr = txtCapacidadEnToneladas.getText();
                 String tiempoDeCultivoDiasStr = txtTiempoDeCultivoDias.getText();
 
-                // 2. Usar la lógica de validación de ValidadorInputs
+                // 2. se usa la lógica de validación de ValidadorInputs
                 if ((error = ValidadorInputs.validarNombreCompuesto(nombre)) != null) {
                     JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -642,7 +800,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                             comuna.toUpperCase(),
                             capacidadEnToneladas,
                             tiempoDeCultivoDias,
-                            gestorEntidades.buscarGerenteDeCultivos());
+                            gestorEntidades.buscarGerente(2));
 
                     gestorEntidades.agregarRegistrable(nuevoCentroDeCultivo);
 
@@ -742,7 +900,7 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                             comuna.toUpperCase(),
                             toneladasDisponiblesVenta,
                             toneladasVendidas,
-                            gestorEntidades.buscarGerenteDeVentas());
+                            gestorEntidades.buscarGerente(3));
 
                     gestorEntidades.agregarRegistrable(nuevoCentroDeVenta);
 
@@ -874,6 +1032,12 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                 }
                 // 3. Si todo es válido, procesar la creación del empleado
                 try {
+
+                    if (gestorEntidades.verificarRut(1, rutStr)) {
+                        JOptionPane.showMessageDialog(dialog, "El empleado ya se encuentra registrado", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     // Crear objetos complejos
                     double sueldo = Double.parseDouble(sueldoStr);
                     Rut rut = new Rut(rutStr);
@@ -893,6 +1057,147 @@ public class InterfazUsuario extends JFrame implements ActionListener {
                     gestorEntidades.agregarRegistrable(nuevoEmpleado);
 
                     JOptionPane.showMessageDialog(dialog, "Empleado creado exitosamente.", "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    // Se actualizan los contadores
+                    actualizarContadores();
+
+                    // Cerrar el diálogo después de guardar
+                    dialog.dispose();
+
+                } catch (Exception ex) {
+                    // Capturar cualquier error remanente, por ejemplo del constructor de Rut
+                    JOptionPane.showMessageDialog(dialog, "Ocurrió un error al guardar: " + ex.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(btnGuardar);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Muestra el diálogo
+        dialog.setVisible(true);
+    }
+
+    private void mostrarDialogoCrearCliente() {
+        // Creamos el diálogo de forma local e instantánea
+        JDialog dialog = new JDialog(this, "Crear Nuevo Cliente", true);
+        dialog.setSize(400, 400);
+        dialog.setLocationRelativeTo(this);
+
+        // Definimos los campos de texto que usaremos
+        JTextField txtNombre = new JTextField();
+        JTextField txtApellido = new JTextField();
+        JTextField txtRut = new JTextField();
+        JTextField txtCorreo = new JTextField();
+        JTextField txtTelefono = new JTextField();
+        JTextField txtCalle = new JTextField();
+        JTextField txtComuna = new JTextField();
+        JTextField txtRegion = new JTextField();
+
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        formPanel.add(new JLabel("Nombre:"));
+        formPanel.add(txtNombre);
+        formPanel.add(new JLabel("Apellido:"));
+        formPanel.add(txtApellido);
+        formPanel.add(new JLabel("RUT:"));
+        formPanel.add(txtRut);
+        formPanel.add(new JLabel("Correo:"));
+        formPanel.add(txtCorreo);
+        formPanel.add(new JLabel("Teléfono:"));
+        formPanel.add(txtTelefono);
+        formPanel.add(new JLabel("--- Dirección ---"));
+        formPanel.add(new JLabel(""));
+        formPanel.add(new JLabel("Calle y Número:"));
+        formPanel.add(txtCalle);
+        formPanel.add(new JLabel("Comuna:"));
+        formPanel.add(txtComuna);
+        formPanel.add(new JLabel("Región:"));
+        formPanel.add(txtRegion);
+
+        dialog.add(formPanel, BorderLayout.CENTER);
+
+        JButton btnGuardar = new JButton("Guardar Empleado");
+
+        // Usamos una CLASE INTERNA ANÓNIMA para manejar el evento del botón Guardar
+        btnGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String error = null; // Variable para almacenar mensajes de error
+
+                // 1. Obtener datos crudos
+                String nombre = txtNombre.getText();
+                String apellido = txtApellido.getText();
+                String rutStr = txtRut.getText();
+                String correo = txtCorreo.getText();
+                String telefono = txtTelefono.getText();
+                String calle = txtCalle.getText();
+                String comuna = txtComuna.getText();
+                String region = txtRegion.getText();
+
+                // 2. Usar la lógica de validación de ValidadorInputs
+                if ((error = ValidadorInputs.validarNombreCompuesto(nombre)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarNombreCompuesto(apellido)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarRut(rutStr)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarCorreo(correo)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarTelefono(telefono)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarTextoConNumeros(calle, "Calle")) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarNombreCompuesto(comuna)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if ((error = ValidadorInputs.validarNombreCompuesto(region)) != null) {
+                    JOptionPane.showMessageDialog(dialog, error, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // 3. Si todo es válido, procesar la creación del empleado
+                try {
+                    // Verificar si el rut ya existe
+                    if (gestorEntidades.verificarRut(2, rutStr)) {
+                        JOptionPane.showMessageDialog(dialog, "El cliente ya se encuentra registrado", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Crear objetos complejos
+                    Rut rut = new Rut(rutStr);
+                    Direccion dir = new Direccion(calle.toUpperCase(), comuna.toUpperCase(), region.toUpperCase());
+
+                    // Usar el constructor de Empleado y el gestor de la clase principal
+                    // Normalizamos a mayúsculas como hacías en la consola
+                    Cliente nuevoCliente = new Cliente(
+                            nombre.toUpperCase(),
+                            apellido.toUpperCase(),
+                            rut,
+                            correo,
+                            dir,
+                            telefono);
+
+                    gestorEntidades.agregarRegistrable(nuevoCliente);
+
+                    JOptionPane.showMessageDialog(dialog, "Cliente creado exitosamente.", "Éxito",
                             JOptionPane.INFORMATION_MESSAGE);
 
                     // Se actualizan los contadores

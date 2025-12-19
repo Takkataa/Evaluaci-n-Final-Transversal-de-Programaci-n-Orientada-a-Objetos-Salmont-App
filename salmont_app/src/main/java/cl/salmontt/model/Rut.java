@@ -3,7 +3,7 @@ package cl.salmontt.model;
 import cl.salmontt.utils.Validador;
 
 /**
- * Clase Rut.
+ * Clase Rut. tiene una relacion de composicion con persona.
  * Representa el Rol Único Tributario chileno, utilizado como identificador
  * personal.
  * Incluye validación básica de formato mediante expresión regular.

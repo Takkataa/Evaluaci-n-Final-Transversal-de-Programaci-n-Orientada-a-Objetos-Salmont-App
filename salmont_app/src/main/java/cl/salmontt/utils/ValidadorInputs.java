@@ -43,6 +43,24 @@ public class ValidadorInputs {
         }
     }
 
+    // Expresión regular:
+    // ^\+569 -> Debe empezar por +569
+    // \s? -> Espacio opcional
+    // \d{8} -> Exactamente 8 dígitos numéricos
+    public static String validarTelefono(String numeroStr) {
+        if (numeroStr == null) {
+            return "El número no puede estar vacío.";
+        }
+
+        String regex = "^\\+569\\s?\\d{8}$";
+
+        if (numeroStr.matches(regex)) {
+            return null; // Es válido
+        } else {
+            return "Formato inválido. Debe ser +569 seguido de 8 dígitos (Ej: +569 1234 5678).";
+        }
+    }
+
     public static String validarCorreo(String correo) {
         if (!new Validador<>(correo)
                 .isNotNull()

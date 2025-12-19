@@ -3,7 +3,7 @@ package cl.salmontt.model;
 import cl.salmontt.utils.Validador;
 
 /**
- * Clase Direccion.
+ * Clase Direccion. Tiene una relacion de composicion con Persona
  * Representa una dirección física compuesta por calle con numero, comuna y
  * región.
  * Incluye validaciones básicas para asegurar que los datos ingresados sean
