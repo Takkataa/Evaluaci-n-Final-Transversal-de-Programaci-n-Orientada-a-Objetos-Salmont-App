@@ -1,6 +1,6 @@
 ![Duoc UC](https://www.duoc.cl/wp-content/uploads/2022/09/logo-0.png)
 
-# 🧠 Evaluación Sumativa semana 8 – Desarrollo Orientado a Objetos I
+# 🧠 Evaluación Final Transversal– Programacion Orientada a Objetos I
 
 ## 👤 Autor del proyecto
 
@@ -13,10 +13,10 @@
 
 ## 📘 Descripción general del proyecto
 
-Este proyecto corresponde a la tercera actividad sumativa de la asignatura _Desarrollo Orientado a Objetos I_. Se trata de un sistema orientado a objetos desarrollado en Java, cuyo objetivo es modelar y gestionar entidades representativas de un dominio real, aplicando los principios de encapsulamiento, herencia, poliformismo, composición, asignacion, manejo de errores, interfaces y relaciones entre clases.
+Este proyecto corresponde a la evaluacion final transversal de la asignatura _Programacion Orientada a Objetos I_. Se trata de un sistema orientado a objetos desarrollado en Java, cuyo objetivo es modelar y gestionar entidades representativas de un dominio real, aplicando los principios de encapsulamiento, herencia, poliformismo, composición, asignacion, manejo de errores, interfaces, leer documentos externos, validaciones y relaciones entre clases.
 
 El proyecto fue desarrollado a partir de un caso contextualizado, abordando problemáticas reales y proponiendo una solución estructurada, modular y reutilizable.
-En este caso se nos solicito realizar la digitalizacion de un salmonera en Puerto Montt llamada "SALMONTT" empezando desde lo la base en relacion a sus unidades operativas y administracion de las mismas.
+En este caso se nos solicito realizar la digitalizacion de un salmonera en Puerto Montt llamada "SALMONTT" empezando desde la base en relacion a sus unidades operativas( _UnidadesOperativas.csv_) y administracion de personas de las mismas(_Empleados.csv_).
 
 ---
 
@@ -41,7 +41,7 @@ En este caso se nos solicito realizar la digitalizacion de un salmonera en Puert
 1. Clona el repositorio desde GitHub:
 
 ```bash
-https://github.com/Takkataa/Exp3_SalmonttApp_Angel_Araya_Gonzalez_Semana_8.git
+https://github.com/Takkataa/Evaluaci-n-Final-Transversal-de-Programaci-n-Orientada-a-Objetos-Salmont-App.git
 ```
 
 2. Abre el proyecto en IntelliJ IDEA.
@@ -54,9 +54,10 @@ https://github.com/Takkataa/Exp3_SalmonttApp_Angel_Araya_Gonzalez_Semana_8.git
 
 ---
 
-**Repositorio GitHub:** https://github.com/Takkataa/Exp3_SalmonttApp_Angel_Araya_Gonzalez_Semana_8.git
+**Repositorio GitHub:** https://github.com/Takkataa/Evaluaci-n-Final-Transversal-de-Programaci-n-Orientada-a-Objetos-Salmont-App.git
+
 **Fecha de entrega:** \[15/12/2025]
 
 ---
 
-© Duoc UC | Escuela de Informática y Telecomunicaciones | Programacion Orientada a Objetos I | Experiencia de Aprendizaje 3
+© Duoc UC | Escuela de Informática y Telecomunicaciones | Programacion Orientada a Objetos I | Evaluacion Final Transversal
